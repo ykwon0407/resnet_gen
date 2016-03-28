@@ -1883,10 +1883,10 @@ layer {
 	}
 }
 layer {
-  name: "res_5_1_branch2a"
+  name: "res5_1_branch2a"
   type: "Convolution"
   bottom: "res4_6"
-  top: "res_5_1_branch2a"
+  top: "res5_1_branch2a"
   convolution_param {
     num_output: 512
     pad: 0
