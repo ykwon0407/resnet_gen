@@ -527,8 +527,8 @@ layer {
   }
 }
 layer {
-	bottom: "res2_1_branch1"
-	top: "res2_1_branch1"
+	bottom: "res3_1_branch1"
+	top: "res3_1_branch1"
 	name: "bn3_1_branch1"
 	type: "BatchNorm"
 	batch_norm_param {
@@ -536,8 +536,8 @@ layer {
 	}
 }
 layer {
-	bottom: "res2_1_branch1"
-	top: "res2_1_branch1"
+	bottom: "res3_1_branch1"
+	top: "res3_1_branch1"
 	name: "scale3_1_branch1"
 	type: "Scale"
 	scale_param {
