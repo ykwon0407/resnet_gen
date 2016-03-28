@@ -254,7 +254,7 @@ def generate_deploy():
     network_str += generate_bn_layer('bn5_1_branch1', 'scale5_1_branch1', 'res5_1_branch1')
     last_output = 'res5_1_branch1'
     '''stage 4'''
-    network_str += generate_conv_layer(1, 512, 2, 0, 'res_5_1_branch2a', last_top)
+    network_str += generate_conv_layer(1, 512, 2, 0, 'res5_1_branch2a', last_top)
     network_str += generate_bn_layer('bn5_1_branch2a', 'scale5_1_branch2a', 'res5_1_branch2a')
     network_str += generate_activation_layer('res5_1_branch2a_relu', 'res5_1_branch2a')
     network_str += generate_conv_layer(3, 512, 1, 1, 'res5_1_branch2b', 'res5_1_branch2a')
