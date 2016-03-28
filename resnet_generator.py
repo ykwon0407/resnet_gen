@@ -197,7 +197,7 @@ def generate_deploy():
         last_output = 'res2%s'%word[l]
     '''Random Initialization'''
     network_str += generate_conv_layer(1, 512, 2, 0, 'res3_1_branch1', last_top)
-    network_str += generate_bn_layer('bn3_1_branch1', 'scale3_1_branch1', 'res2_1_branch1')
+    network_str += generate_bn_layer('bn3_1_branch1', 'scale3_1_branch1', 'res3_1_branch1')
     last_output = 'res3_1_branch1'
     '''stage 2'''
     network_str += generate_conv_layer(1, 128, 2, 0, 'res3_1_branch2a', last_top)
