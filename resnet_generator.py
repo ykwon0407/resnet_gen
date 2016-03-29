@@ -66,6 +66,9 @@ def generate_bn_layer(batch_name, scale_name, bottom):
 	top: "%s"
 	name: "%s"
 	type: "BatchNorm"
+	include {
+		phase: TRAIN
+	}
 	batch_norm_param {
 		use_global_stats: false
 	}
@@ -79,6 +82,29 @@ def generate_bn_layer(batch_name, scale_name, bottom):
     		lr_mult: 0
   	}
 }
+
+layer {
+	bottom: "%s"
+	top: "%s"
+	name: "%s"
+	type: "BatchNorm"
+	include {
+		phase: TEST
+	}
+	batch_norm_param {
+		use_global_stats: true
+	}
+	param {
+    		lr_mult: 0
+  	}
+	 param {
+    		lr_mult: 0
+  	}
+  	param {
+    		lr_mult: 0
+  	}
+}
+
 layer {
 	bottom: "%s"
 	top: "%s"
@@ -88,7 +114,7 @@ layer {
 		bias_term: true
 	}
 }
-'''%(bottom, batch_name, batch_name, batch_name, scale_name, scale_name)
+'''%(bottom, batch_name, batch_name, bottom, batch_name, batch_name, batch_name, scale_name, scale_name)
     return bn_layer_str
     
 def generate_activation_layer(layer_name, bottom):
