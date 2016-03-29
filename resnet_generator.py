@@ -190,7 +190,7 @@ def generate_deploy():
     last_top = 'pool1'
     network_str += generate_conv_layer(1, 256, 1, 0, 'res2a_branch1', last_top)
     network_str += generate_bn_layer('bn2a_branch1', 'scale2a_branch1', 'res2a_branch1')
-    last_output = 'res2a_branch1'
+    last_output = 'scale2a_branch1'
     for l in xrange(1, args.layer_number[0]+1):
         network_str += generate_conv_layer(1, 64, 1, 0, 'res2%s_branch2a'%word[l], last_top)
         network_str += generate_bn_layer('bn2%s_branch2a'%word[l], 'scale2%s_branch2a'%word[l], 'res2%s_branch2a'%word[l])
