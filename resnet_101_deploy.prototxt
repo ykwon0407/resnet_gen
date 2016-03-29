@@ -98,10 +98,10 @@ layer {
   }
 }
 layer {
-  name: "res2a_branch1"
+  name: "res2_1_branch1"
   type: "Convolution"
   bottom: "pool1"
-  top: "res2a_branch1"
+  top: "res2_1_branch1"
   param {
     lr_mult: 1
     decay_mult: 1
@@ -118,15 +118,15 @@ layer {
   }
 }
 layer {
-	bottom: "res2a_branch1"
-	top: "bn2a_branch1"
-	name: "bn2a_branch1"
+	bottom: "res2_1_branch1"
+	top: "bn2_1_branch1"
+	name: "bn2_1_branch1"
 	type: "BatchNorm"
 }
 layer {
-	bottom: "bn2a_branch1"
-	top: "scale2a_branch1"
-	name: "scale2a_branch1"
+	bottom: "bn2_1_branch1"
+	top: "scale2_1_branch1"
+	name: "scale2_1_branch1"
 	type: "Scale"
 	scale_param {
 		bias_term: true
@@ -251,7 +251,7 @@ layer {
 }
 layer {
   type: "Eltwise"
-  bottom: "scale2a_branch1"
+  bottom: "scale2_1_branch1"
   bottom: "scale2_1_branch2c"
   name: "res2_1"
   top: "res2_1"
