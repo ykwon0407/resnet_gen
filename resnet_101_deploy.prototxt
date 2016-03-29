@@ -299,7 +299,7 @@ layer {
 }
 layer {
   type: "Eltwise"
-  bottom: "res2a_branch1"
+  bottom: "scale2a_branch1"
   bottom: "scale2a_branch2c"
   name: "res2a"
   top: "res2a"
