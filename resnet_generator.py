@@ -14,7 +14,7 @@ Disclaimer: This work was highly referred Yemin Shi's script
 """
 from argparse import ArgumentParser, ArgumentDefaultsHelpFormatter
 
-word = ['o','a','b','c']
+word = ['o','_1','_2','_3']
 
 def parse_args():
     """Parse input arguments
@@ -40,12 +40,16 @@ input_dim: 448
 '''
     return data_layer_str
 
-def generate_conv_layer(kernel_size, kernel_num, stride, pad, layer_name, bottom, filler="msra"):
+def generate_conv_layer(kernel_size, kernel_num, stride, pad, layer_name, bottom, filler="xavier"):
     conv_layer_str = '''layer {
   name: "%s"
   type: "Convolution"
   bottom: "%s"
   top: "%s"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
   convolution_param {
     num_output: %d
     pad: %d
@@ -66,45 +70,7 @@ def generate_bn_layer(batch_name, scale_name, bottom):
 	top: "%s"
 	name: "%s"
 	type: "BatchNorm"
-	include {
-		phase: TRAIN
-	}
-	batch_norm_param {
-		use_global_stats: false
-	}
-	param {
-    		lr_mult: 0
-  	}
-	 param {
-    		lr_mult: 0
-  	}
-  	param {
-    		lr_mult: 0
-  	}
 }
-
-layer {
-	bottom: "%s"
-	top: "%s"
-	name: "%s"
-	type: "BatchNorm"
-	include {
-		phase: TEST
-	}
-	batch_norm_param {
-		use_global_stats: true
-	}
-	param {
-    		lr_mult: 0
-  	}
-	 param {
-    		lr_mult: 0
-  	}
-  	param {
-    		lr_mult: 0
-  	}
-}
-
 layer {
 	bottom: "%s"
 	top: "%s"
@@ -114,7 +80,7 @@ layer {
 		bias_term: true
 	}
 }
-'''%(bottom, batch_name, batch_name, bottom, batch_name, batch_name, batch_name, scale_name, scale_name)
+'''%(bottom, batch_name, batch_name, batch_name, scale_name, scale_name)
     return bn_layer_str
     
 def generate_activation_layer(layer_name, bottom):
@@ -153,7 +119,7 @@ def generate_eltwise_layer(layer_name, bottom_1, bottom_2):
 '''%(bottom_1, bottom_2, layer_name, layer_name)
     return eltwise_layer_str
     
-def generate_fc_layer(num_output, layer_name, bottom, filler="gaussian"):
+def generate_fc_layer(num_output, layer_name, bottom):
     fc_layer_str = '''layer {
   name: "%s"
   type: "InnerProduct"
@@ -170,16 +136,15 @@ def generate_fc_layer(num_output, layer_name, bottom, filler="gaussian"):
   inner_product_param {
      num_output: %d
      weight_filler {
-       type: "%s"
-       std: 0.001
-     }
+      type: "xavier"
+    }
      bias_filler {
        type: "constant"
        value: 0
      }
   }
 }
-'''%(layer_name, bottom, layer_name, num_output, filler)
+'''%(layer_name, bottom, layer_name, num_output)
     return fc_layer_str
 
 def generate_softmax_loss(bottom):
@@ -189,6 +154,9 @@ def generate_softmax_loss(bottom):
   bottom: "%s"
   bottom: "label"
   top: "loss2/softmax"
+  include {
+    phase: TEST
+  }
 }
 layer {
   bottom: "%s"
@@ -196,8 +164,20 @@ layer {
   top: "loss1/acc"
   name: "loss1/acc"
   type: "Accuracy"
+  include {
+    phase: TEST
+  }
 }
-'''%(bottom, bottom)
+layers {
+  bottom: "%s"
+  top: "loss3/prob"
+  name: "loss3/prob"
+  type: "Softmax"
+  include {
+    phase: TEST
+  }
+}
+'''%(bottom, bottom, bottom)
     return softmax_loss_str
 
 def generate_deploy():
@@ -313,7 +293,7 @@ def generate_deploy():
         network_str += generate_activation_layer('res5_%d_relu'%l, 'res5_%d'%l)
         last_top = 'res5_%d'%l
     network_str += generate_pooling_layer(7, 1, 'AVE', 'pool5', last_top)
-    network_str += generate_fc_layer(5, 'fc5', 'pool5', 'gaussian')
+    network_str += generate_fc_layer(5, 'fc5', 'pool5')
     network_str += generate_softmax_loss('fc5')
     return network_str
 
