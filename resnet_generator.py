@@ -67,8 +67,17 @@ def generate_bn_layer(batch_name, scale_name, bottom):
 	name: "%s"
 	type: "BatchNorm"
 	batch_norm_param {
-		use_global_stats: true
+		use_global_stats: false
 	}
+	param {
+    		lr_mult: 0
+  	}
+	 param {
+    		lr_mult: 0
+  	}
+  	param {
+    		lr_mult: 0
+  	}
 }
 layer {
 	bottom: "%s"
@@ -79,7 +88,7 @@ layer {
 		bias_term: true
 	}
 }
-'''%(bottom, bottom, batch_name, bottom, bottom, scale_name)
+'''%(bottom, batch_name, batch_name, batch_name, scale_name, scale_name)
     return bn_layer_str
     
 def generate_activation_layer(layer_name, bottom, act_type="ReLU"):
