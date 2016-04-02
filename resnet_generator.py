@@ -212,7 +212,7 @@ def generate_deploy():
     network_str += generate_conv_layer(3, 64, 1, 1, 'res3_1_branch2b', 'scale3_1_branch2a')
     network_str += generate_bn_layer('bn3_1_branch2b', 'scale3_1_branch2b', 'res3_1_branch2b')
     network_str += generate_activation_layer('res3_1_branch2b_relu', 'scale3_1_branch2b')
-    network_str += generate_conv_layer(1, 128, 1, 0, 'res3_1_branch2c', 'scale3_1_branch2b')
+    network_str += generate_conv_layer(1, 256, 1, 0, 'res3_1_branch2c', 'scale3_1_branch2b')
     network_str += generate_bn_layer('bn3_1_branch2c', 'scale3_1_branch2c', 'res3_1_branch2c')
     network_str += generate_eltwise_layer('res3_1', last_output, 'scale3_1_branch2c')
     network_str += generate_activation_layer('res3_1_relu', 'res3_1')
