@@ -22,10 +22,10 @@ def parse_args():
     parser = ArgumentParser(description=__doc__,
                             formatter_class=ArgumentDefaultsHelpFormatter)
     parser.add_argument('--deploy_file', action='store',
-                        default='resnet_50_deploy.prototxt')
+                        default='resnet_tiny_deploy.prototxt')
     parser.add_argument('--layer_number', nargs='*', action='store',type=int,
                         help=('Layer number for each layer stage.'),
-                        default=[3, 4, 6, 3])
+                        default=[2, 2, 4, 2])
     args = parser.parse_args()
     print (parser.parse_args())
     return args
@@ -70,12 +70,12 @@ def generate_bn_layer(batch_name, scale_name, bottom):
 	top: "%s"
 	name: "%s"
 	type: "BatchNorm"
-	  param {
-		  lr_mult: 0
-	  }
-	 param {
-		    lr_mult: 0
-	  }
+	param {
+		lr_mult: 0
+	}
+	param {
+		lr_mult: 0
+	}
 	param {
     		lr_mult: 0
   	}
