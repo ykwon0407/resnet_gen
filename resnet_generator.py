@@ -70,6 +70,15 @@ def generate_bn_layer(batch_name, scale_name, bottom):
 	top: "%s"
 	name: "%s"
 	type: "BatchNorm"
+	  param {
+		  lr_mult: 0
+	  }
+	 param {
+		    lr_mult: 0
+	  }
+	param {
+    		lr_mult: 0
+  	}
 }
 layer {
 	bottom: "%s"
